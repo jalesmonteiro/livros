@@ -1,0 +1,37 @@
+{% extends 'livros/base.html' %}
+
+{% block title %}Livros - Resenhas de Livros{% endblock %}
+
+{% block content %}
+<h2 class="main-color mb-4">Todos os Livros</h2>
+
+{% if user.is_authenticated %}
+    <div class="mb-4 text-end">
+        <a href="{% url 'adicionar_livro' %}" class="btn btn-main">
+            + Adicionar Livro
+        </a>
+    </div>
+{% endif %}
+
+<div class="row">
+    {% for livro in livros %}
+        <div class="col-md-3 mb-4">
+            <div class="card h-100">
+                {% if livro.capa %}
+                    <img src="{{ livro.capa.url }}" class="card-img-top" alt="{{ livro.titulo }}">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ livro.titulo }}</h5>
+                    <p class="card-text">por {{ livro.autor }}</p>
+                    <a href="{% url 'detalhe_livro' livro.id %}" class="btn btn-main btn-sm">Ver detalhes</a>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'editar_livro' livro.id %}" class="btn btn-outline-secondary btn-sm">Editar livro</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <p>Nenhum livro cadastrado ainda.</p>
+    {% endfor %}
+</div>
+{% endblock %}

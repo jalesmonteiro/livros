@@ -1,0 +1,55 @@
+{% extends 'livros/base.html' %}
+
+{% block title %}{{ livro.titulo }} - Detalhes{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-4">
+        {% if livro.capa %}
+            <img src="{{ livro.capa.url }}" alt="Capa de {{ livro.titulo }}" class="img-fluid rounded mb-3">
+        {% endif %}
+    </div>
+    <div class="col-md-8">
+        <h2 class="main-color">{{ livro.titulo }}</h2>
+        <p><strong>Autor:</strong> {{ livro.autor }}</p>
+        <p><strong>Data de publicação:</strong> {{ livro.data_publicacao|date:"d/m/Y" }}</p>
+        {% if livro.sinopse %}
+            <p><strong>Sinopse:</strong> {{ livro.sinopse }}</p>
+        {% endif %}
+        <p><strong>Média das avaliações:</strong>
+            {% if livro.media_avaliacoes %}
+                {{ livro.media_avaliacoes }}
+            {% else %}
+                Ainda não avaliado
+            {% endif %}
+        </p>
+    </div>
+</div>
+
+<hr>
+
+<h4 class="main-color mb-3">Resenhas</h4>
+{% if resenhas %}
+    <ul class="list-group mb-4">
+        {% for resenha in resenhas %}
+            <li class="list-group-item">
+                <strong>{{ resenha.usuario.username }}</strong>
+                <span class="badge bg-main ms-2">{{ resenha.nota }}/5</span>
+                <br>
+                <small class="text-muted">{{ resenha.data_publicacao|date:"d/m/Y H:i" }}</small>
+                <p class="mb-1 mt-2">{{ resenha.texto }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Ainda não há resenhas para este livro.</p>
+{% endif %}
+
+{% if user.is_authenticated %}
+    <a href="{% url 'adicionar_resenha' livro.id %}" class="btn btn-main">Adicionar Resenha</a>
+{% else %}
+    <p><a href="{% url 'login' %}">Entre</a> para adicionar uma resenha.</p>
+{% endif %}
+
+<a href="{% url 'listar_livros' %}" class="btn btn-secondary mt-3">Voltar à lista de livros</a>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends 'livros/base.html' %}
+
+{% block title %}Página Inicial - Resenhas de Livros{% endblock %}
+
+{% block content %}
+    <!-- Banner de boas-vindas -->
+    <div class="p-4 mb-4 bg-light rounded-3 text-center">
+        <h1 class="main-color">Bem-vindo ao Resenhas de Livros</h1>
+        <p class="lead">Descubra novos livros, leia resenhas sinceras e compartilhe suas opiniões!</p>
+        {% if not user.is_authenticated %}
+            <a href="{% url 'registrar' %}" class="btn btn-main btn-lg">Cadastre-se agora</a>
+        {% endif %}
+    </div>
+
+    <!-- Busca rápida -->
+    <div class="mb-4">
+        <form method="get" action="{% url 'buscar_livros' %}">
+            <div class="input-group">
+                <input type="text" class="form-control" name="q" placeholder="Buscar livros por título, autor ou categoria...">
+                <button class="btn btn-main" type="submit">Buscar</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Livros em destaque -->
+    <div class="mb-4">
+        <h2 class="main-color mb-3">Livros em Destaque</h2>
+        <div class="row">
+            {% for livro in livros_destaque %}
+                <div class="col-md-3 mb-4">
+                    <div class="card h-100">
+                        {% if livro.capa %}
+                            <img src="{{ livro.capa.url }}" class="card-img-top" alt="{{ livro.titulo }}">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ livro.titulo }}</h5>
+                            <p class="card-text">por {{ livro.autor }}</p>
+                            <p class="card-text"><small class="text-muted">Nota média: {{ livro.media_avaliacoes }}</small></p>
+                            <a href="{% url 'detalhe_livro' livro.id %}" class="btn btn-outline-main" style="border-color: #e14623; color: #e14623;">Ver detalhes</a>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p>Nenhum livro em destaque no momento.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Resenhas recentes -->
+    <div class="mb-4">
+        <h2 class="main-color mb-3">Resenhas Recentes</h2>
+        <ul class="list-group">
+            {% for resenha in resenhas_recentes %}
+                <li class="list-group-item">
+                    <strong>{{ resenha.usuario.username }}</strong> avaliou <strong>{{ resenha.livro.titulo }}</strong>:
+                    <span class="badge bg-main">{{ resenha.nota }} / 5</span>
+                    <p class="mb-0">{{ resenha.texto|truncatewords:20 }}</p>
+                </li>
+            {% empty %}
+                <li class="list-group-item">Nenhuma resenha recente.</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
