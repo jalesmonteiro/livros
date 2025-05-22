@@ -133,11 +133,28 @@ def buscar_livros(request):
     livros = Livro.objects.all()
     if termo:
         livros = livros.filter(
-            Q(titulo__icontains=termo) |
-            Q(autor__icontains=termo) |
-            Q(sinopse__icontains=termo)
+            Q(titulo__icontains=termo)
+            | Q(autor__icontains=termo) 
+#            | Q(sinopse__icontains=termo)
         )
-    return render(request, 'livros/listar_livros.html', {'livros': livros, 'busca': termo})
+    # Pegue a quantidade de itens por página, igual à view de listagem
+    quantidade = request.GET.get('quantidade', '8')
+    try:
+        quantidade = int(quantidade)
+        if quantidade not in [8, 16, 24]:
+            quantidade = 8
+    except ValueError:
+        quantidade = 8
+
+    paginator = Paginator(livros, quantidade)
+    page_number = request.GET.get('page', 1)
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'livros/listar_livros.html', {
+        'page_obj': page_obj,
+        'quantidade': quantidade,
+        'busca': termo,
+    })
 
 @login_required
 def excluir_livro(request, id):

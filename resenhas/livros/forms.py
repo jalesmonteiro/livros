@@ -15,6 +15,10 @@ class LivroForm(forms.ModelForm):
         model = Livro
         fields = ['titulo', 'autor', 'data_publicacao', 'sinopse', 'capa']
         widgets = {
+            'titulo': forms.TextInput(attrs={'class': 'form-control'}),
+            'autor': forms.TextInput(attrs={'class': 'form-control'}),
+            'sinopse': forms.Textarea(attrs={'class': 'form-control'}),
+            'capa': forms.ClearableFileInput(attrs={'class': 'form-control'}),
             'data_publicacao': forms.DateInput(
                 attrs={'type': 'date', 'class': 'form-control'},
                 format='%Y-%m-%d'
