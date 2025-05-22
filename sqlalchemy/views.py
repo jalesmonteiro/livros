@@ -1,3 +1,22 @@
+# ==== IMPORTAÇÕES DJANGO ====
+# Para modelos e queries
+from django.db.models import Avg, Q
+from django.core.paginator import Paginator
+from django.shortcuts import get_object_or_404
+from models import Livro, Resenha
+
+# ==== IMPORTAÇÕES SQLALCHEMY ====
+# Para sessão, funções e operadores
+from sqlalchemy import func, or_
+
+class NotFound(Exception):
+    pass
+
+session = None
+termo = None
+page_number = None
+quantidade = None
+
 # 1. Livros em destaque (maior nota média)
 #django
 livros_destaque = Livro.objects.annotate(media=Avg('resenhas__nota')).order_by('-media')[:4]
