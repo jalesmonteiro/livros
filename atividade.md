@@ -47,13 +47,3 @@
    > - Média de livros lidos/favoritados por usuário
    > - Média de resenhas por livro
    > - Média de tags por livro
-
----
-
-Essas sugestões vão te ajudar a praticar:
-- **Relacionamentos OneToOne, ForeignKey e ManyToMany**
-- **Consultas com filtros, anotações (`annotate`), agregações (`Count`, `Avg`)**
-- **Uso de funções SQL e lógica de exibição em templates**
-- **Criação de páginas dinâmicas e estatísticas com o ORM do Django**
-
-Aproveite para experimentar diferentes tipos de consultas e refinar sua modelagem!
