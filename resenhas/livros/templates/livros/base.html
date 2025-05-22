@@ -32,6 +32,27 @@
             border-color: #c23a1d;
             color: #fff;
         }
+        /* Paginação personalizada */
+        .pagination .page-link,
+        .pagination .page-link:focus {
+            color: #e14623;
+            border-color: #e14623;
+        }
+        .pagination .page-item.active .page-link {
+            background-color: #e14623;
+            border-color: #e14623;
+            color: #fff;
+        }
+        .pagination .page-link:hover {
+            background-color: #fbe6df;
+            color: #e14623;
+            border-color: #e14623;
+        }
+        .pagination .page-item.disabled .page-link {
+            color: #aaa;
+            background-color: #fff;
+            border-color: #e14623;
+        }
     </style>
     {% block extra_head %}{% endblock %}
 </head>
@@ -76,8 +97,6 @@
             </div>
         </div>
     </nav>
-
-
 
     <div class="container">
         {% block content %}

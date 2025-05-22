@@ -15,7 +15,11 @@ class LivroForm(forms.ModelForm):
         model = Livro
         fields = ['titulo', 'autor', 'data_publicacao', 'sinopse', 'capa']
         widgets = {
-            'data_publicacao': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'data_publicacao': forms.DateInput(
+                attrs={'type': 'date', 'class': 'form-control'},
+                format='%Y-%m-%d'
+            ),
+            'tags': forms.SelectMultiple(attrs={'class': 'form-control'}),
         }
 
 class ResenhaForm(forms.ModelForm):

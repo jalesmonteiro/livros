@@ -47,18 +47,28 @@
     </div>
 
     <!-- Resenhas recentes -->
-    <div class="mb-4">
-        <h2 class="main-color mb-3">Resenhas Recentes</h2>
-        <ul class="list-group">
-            {% for resenha in resenhas_recentes %}
-                <li class="list-group-item">
-                    <strong>{{ resenha.usuario.username }}</strong> avaliou <strong>{{ resenha.livro.titulo }}</strong>:
-                    <span class="badge bg-main">{{ resenha.nota }} / 5</span>
-                    <p class="mb-0">{{ resenha.texto|truncatewords:20 }}</p>
-                </li>
-            {% empty %}
-                <li class="list-group-item">Nenhuma resenha recente.</li>
-            {% endfor %}
-        </ul>
+    <h2 class="main-color mb-3">Resenhas Recentes</h2>
+    <div class="row">
+        {% for resenha in resenhas_recentes %}
+            <div class="col-md-6 mb-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="fw-bold me-2" style="color: #e14623;">{{ resenha.usuario.username }}</span>
+                            <span class="badge" style="background-color: #e14623;">{{ resenha.nota }}/5</span>
+                            <span class="text-muted ms-2" style="font-size: 0.9em;">{{ resenha.data_publicacao|date:"d/m/Y" }}</span>
+                        </div>
+                        <div class="mb-2">
+                            <span class="fw-semibold">avaliou</span>
+                            <span class="fw-bold">{{ resenha.livro.titulo }}</span>
+                        </div>
+                        <p class="mb-0" style="font-size: 1.05em;">{{ resenha.texto }}</p>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p class="text-muted">Nenhuma resenha recente.</p>
+        {% endfor %}
     </div>
+
 {% endblock %}
