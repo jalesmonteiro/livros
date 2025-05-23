@@ -62,13 +62,9 @@
     <p>Ainda não há resenhas para este livro.</p>
 {% endif %}
 
-{% if user.is_authenticated %}
-    <a href="{% url 'adicionar_resenha' livro.id %}" class="btn btn-main">Adicionar Resenha</a>
-    <a href="{% url 'editar_livro' livro.id %}" class="btn btn-outline-secondary">Editar livro</a>
-    <a href="{% url 'excluir_livro' livro.id %}" class="btn btn-danger mt-3">Excluir livro</a>
-{% else %}
-    <p><a href="{% url 'login' %}">Entre</a> para adicionar uma resenha.</p>
-{% endif %}
-
+<a href="{% url 'adicionar_resenha' livro.id %}" class="btn btn-main">Adicionar Resenha</a>
+<a href="{% url 'editar_livro' livro.id %}" class="btn btn-outline-secondary">Editar livro</a>
+<a href="{% url 'excluir_livro' livro.id %}" class="btn btn-danger mt-3">Excluir livro</a>
 <a href="{% url 'listar_livros' %}" class="btn btn-secondary mt-3">Voltar à lista de livros</a>
+
 {% endblock %}
