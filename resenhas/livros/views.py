@@ -34,6 +34,7 @@ def login_view(request):
             messages.error(request, 'Usuário ou senha inválidos.')
     return render(request, 'livros/login.html')
 
+@login_required(login_url='login')
 def home(request):
     if not request.user.is_authenticated:
         return redirect('login')
@@ -46,9 +47,11 @@ def home(request):
     }
     return render(request, 'livros/home.html', context)
 
+@login_required(login_url='login')
 def buscar_livros(request):
     return render(request, 'livros/home.html')
 
+@login_required(login_url='login')
 def detalhe_livro(request, id):
     livro = get_object_or_404(Livro, id=id)
     resenhas = livro.resenhas.select_related('usuario').order_by('-data_publicacao')
@@ -57,6 +60,7 @@ def detalhe_livro(request, id):
         'resenhas': resenhas,
     })
 
+@login_required(login_url='login')
 def listar_livros(request):
     # Obtém o parâmetro 'quantidade' da query string, padrão 8
     quantidade = request.GET.get('quantidade', '8')
@@ -79,7 +83,7 @@ def listar_livros(request):
         'quantidade': quantidade,
     })
 
-@login_required
+@login_required(login_url='login')
 def adicionar_livro(request):
     if request.method == "POST":
         form = LivroForm(request.POST, request.FILES)
@@ -90,7 +94,7 @@ def adicionar_livro(request):
         form = LivroForm()
     return render(request, 'livros/adicionar_livro.html', {'form': form})
 
-@login_required
+@login_required(login_url='login')
 def adicionar_resenha(request, id):
     livro = get_object_or_404(Livro, id=id)
     if request.method == "POST":
@@ -105,7 +109,7 @@ def adicionar_resenha(request, id):
         form = ResenhaForm()
     return render(request, 'livros/adicionar_resenha.html', {'form': form, 'livro': livro})
 
-@login_required
+@login_required(login_url='login')
 def editar_livro(request, id):
     livro = get_object_or_404(Livro, id=id)
     if request.method == "POST":
@@ -117,7 +121,7 @@ def editar_livro(request, id):
         form = LivroForm(instance=livro)
     return render(request, 'livros/editar_livro.html', {'form': form, 'livro': livro})
 
-@login_required
+@login_required(login_url='login')
 def excluir_resenha(request, id):
     resenha = get_object_or_404(Resenha, id=id)
     if resenha.usuario != request.user:
@@ -128,15 +132,19 @@ def excluir_resenha(request, id):
         return redirect('detalhe_livro', id=livro_id)
     return render(request, 'livros/confirmar_exclusao_resenha.html', {'resenha': resenha})
 
+@login_required(login_url='login')
 def buscar_livros(request):
     termo = request.GET.get('q', '')
     livros = Livro.objects.all()
     if termo:
         livros = livros.filter(
             Q(titulo__icontains=termo)
-            | Q(autor__icontains=termo) 
-#            | Q(sinopse__icontains=termo)
+            | Q(autor__icontains=termo)
+            # | Q(sinopse__icontains=termo)
         )
+    # Ordena explicitamente antes de paginar
+    livros = livros.order_by('-id')
+
     # Pegue a quantidade de itens por página, igual à view de listagem
     quantidade = request.GET.get('quantidade', '8')
     try:
@@ -156,7 +164,8 @@ def buscar_livros(request):
         'busca': termo,
     })
 
-@login_required
+
+@login_required(login_url='login')
 def excluir_livro(request, id):
     livro = get_object_or_404(Livro, id=id)
     if request.method == "POST":
