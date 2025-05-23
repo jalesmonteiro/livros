@@ -28,4 +28,13 @@
     <button type="submit" class="btn btn-main">Salvar</button>
     <a href="{% url 'listar_livros' %}" class="btn btn-secondary">Cancelar</a>
 </form>
+<script>
+    var input = document.querySelector('input[name="tags_texto"]');
+    new Tagify(input, {
+        whitelist: [],
+        dropdown: {
+            enabled: 0
+        }
+    });
+</script>
 {% endblock %}

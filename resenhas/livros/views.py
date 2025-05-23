@@ -40,7 +40,7 @@ def home(request):
         return redirect('login')
 
     livros_destaque = Livro.objects.annotate(media=Avg('resenhas__nota')).order_by('-media')[:4]
-    resenhas_recentes = Resenha.objects.select_related('livro', 'usuario').order_by('-data_publicacao')[:5]
+    resenhas_recentes = Resenha.objects.select_related('livro', 'usuario').order_by('-data_publicacao')[:4]
     context = {
         'livros_destaque': livros_destaque,
         'resenhas_recentes': resenhas_recentes,
